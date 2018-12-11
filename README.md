@@ -8,6 +8,35 @@ Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please su
 
 Just download the desired binary and copy it into `.pkg-cache` folder. After this run your `pkg` command and now it will find the desired binary in cache
 
+## Utils
+
+In utils folder you will find a bash script `package.sh` that I have created to package my nodejs application.
+
+Copy the script in your app directory and edit it with your appName and the destination folder of the pkg compiled output.
+
+```bash
+# EDIT THIS WITH YOUR VALUES
+APP="appName"
+PKG_FOLDER="pkg"
+```
+
+It also automatically scan `node_modules` folder and adds required `.node` files that pkg is not able to package.
+
+You will find all your files inside the destination folder and they will be also packaged inside a .zip file with appName and version choosed.
+
+If you want to make things more easy add a script in your `package.json` file:
+
+```json
+
+"scripts": {
+  "start": "sudo node ./bin/www", //default to start the application
+  "package": "sudo chmod +x package.sh && ./package.sh"
+}
+
+```
+
+Than simply run `npm run package` to start the script
+
 
 ## Compilation guide
 
