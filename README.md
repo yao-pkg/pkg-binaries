@@ -1,6 +1,12 @@
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 # Pkg Binaries
 
 Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please submit a pull request if you have others that are not present in pkg resources.
+
+## Usage
+
+Just download the desired binary and copy it into `.pkg-cache` folder. After this run your `pkg` command and now it will find the desired binary in cache
 
 
 ## Compilation guide
