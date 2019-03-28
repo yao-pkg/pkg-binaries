@@ -1,12 +1,23 @@
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-
 # Pkg Binaries
+
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please submit a pull request if you have others that are not present in pkg resources.
 
 ## Usage
 
-Just download the desired binary and copy it into `.pkg-cache` folder. After this run your `pkg` command and now it will find the desired binary in cache
+Just download the desired binary and copy it into `.pkg-cache` folder or (if present) to any subfolders inside that (depends on your version of `pkg`, in my case I have to copy it inside `~/.pkg-cache/v2.5`). After this run your `pkg` command and now it will find the desired binary in cache.
+
+> **ATTENTION**
+
+Once you have placed the file in `.pkg-cache` folder check that the output of `file` command gives you the correct interpreter:
+
+```bash
+pi@NanoPi-NEO-Plus2:~/.pkg-cache/v2.5$ file fetched-v8.11.3-linux-arm64
+fetched-v8.11.3-linux-arm64: ELF 64-bit LSB shared object, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-, for GNU/Linux 3.7.0, BuildID[sha1]=02bf3444ecc520c4da40e89cbfbf6831e3a205ea, not stripped
+```
+
+SOmetimes when using `wget` it could be donwloaded as `HTML text` file and it wouldn't work.
 
 ## Utils
 
@@ -37,7 +48,6 @@ If you want to make things more easy add a script in your `package.json` file:
 
 Than simply run `npm run package` to start the script
 
-
 ## Compilation guide
 
 Here is a guide to manually compile a nodejs binary from source.
@@ -45,32 +55,30 @@ Usually pkg automatically compiles this binary if it doesn't find them in his re
 
 1. Install required build tools:
 
-`sudo apt-get install build-essential`
+    `sudo apt-get install build-essential`
 
 2. Than clone node:
 
-`git clone https://github.com/nodejs/node.git`
+    `git clone https://github.com/nodejs/node.git`
 
 3. Checkout to the desired version:
 
-`cd node`
-`git checkout v8.11.3`
+    `cd node`
+    `git checkout v8.11.3`
 
-4. Create the patch file inside the node dir and paste the content from the patch file you find on pkg-fetch github inside [patch][a9bdf3ee] directory (https://raw.githubusercontent.com/zeit/pkg-fetch/master/patches/node.v8.11.3.cpp.patch)
+4. Create the patch file inside the node dir and paste the content from the patch file you find on pkg-fetch github inside [patch][a9bdf3ee] directory (<https://raw.githubusercontent.com/zeit/pkg-fetch/master/patches/node.v8.11.3.cpp.patch)>
 
+    `sudo nano node.v8.11.3.cpp.patch` (Ctrl+Maiusc+V - Ctrl+X - Y)
 
-`sudo nano node.v8.11.3.cpp.patch` (Ctrl+Maiusc+V - Ctrl+X - Y)
+    `git apply node.v8.11.3.cpp.patch`
 
-`git apply node.v8.11.3.cpp.patch`
+    `./configure`
 
-`./configure`
-
-`make` (this takes many minutes, even hours in some devices)
+    `make` (this takes many minutes, even hours in some devices)
 
 5. Finally copy the binary:
-`cp node ~/.pkg-cache/v2.5/fetched-v8.11.3-linux-arm64`
 
-
+  `cp node ~/.pkg-cache/v2.5/fetched-v8.11.3-linux-arm64`
 
 [207006e9]: https://github.com/zeit/pkg "Zeit Pkg"
 
