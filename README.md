@@ -8,6 +8,14 @@ Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please su
 
 Just download the desired binary and copy it into `.pkg-cache` folder or (if present) to any subfolders inside that (depends on your version of `pkg`, in my case I have to copy it inside `~/.pkg-cache/v2.5`). After this run your `pkg` command and now it will find the desired binary in cache.
 
+Example with `arm64` `node v8.11.3` `linux`:
+
+```bash
+# Must set -O to preserve the correct file metadata
+wget https://github.com/robertsLando/pkg-binaries/raw/master/arm64/fetched-v8.11.3-linux-arm64 -O fetched-v8.11.3-linux-arm64
+sudo mv fetched-v8.11.3-linux-arm64 ~/.pkg-cache/
+```
+
 > **ATTENTION**
 
 Once you have placed the file in `.pkg-cache` folder check that the output of `file` command gives you the correct interpreter:
