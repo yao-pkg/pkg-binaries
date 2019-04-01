@@ -1,6 +1,6 @@
-FROM arm32v6/node:8.15.1-alpine AS build
+FROM arm64v8/node:8.15.1-alpine AS build
 
-COPY bin/qemu-arm-static /usr/bin/
+COPY bin/qemu-aarch64-static /usr/bin/
 
 RUN apk update && apk --no-cache add git wget build-base python linux-headers
 
@@ -12,6 +12,6 @@ RUN cd node && \
     git apply node.v8.11.3.cpp.patch && \
     ./configure && \
     make && \
-    cp node ../fetched-v8.11.3-alpine-armv7
+    cp node ../fetched-v8.11.3-alpine-arm64
 
 CMD ["/bin/bash"]
