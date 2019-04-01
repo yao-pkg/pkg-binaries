@@ -58,6 +58,31 @@ Than simply run `npm run package` to start the script
 
 ## Compilation guide
 
+### Using Docker
+
+This allows to compile nodejs pkg binary for `arm32` (armv7l, armv6) and `arm64` archs from a `x86_64`.
+
+Steps
+
+```bash
+# Clone this repo
+git clone https://github.com/robertsLando/pkg-binaries.git
+cd pkg-binaries
+# Get qemu bianaries
+cd bin
+chmod +x get_qemu.sh
+./get_qemu.sh
+cd ..
+# Build the required binary inside the container
+chmod +x build.sh
+./build.sh
+```
+
+
+### Manually
+
+This requires to run commands in a CPU with the required build ARCH
+
 Here is a guide to manually compile a nodejs binary from source.
 Usually pkg automatically compiles this binary if it doesn't find them in his resources but this process may fail and this is how to do it by your self. In this example I'm compiling nodejs 8 LTS using a device with Linux with architecture arm64 (to check the information about your device run the comand `uname -a`).
 

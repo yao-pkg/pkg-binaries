@@ -28,4 +28,6 @@ done
 sudo docker run --rm --privileged multiarch/qemu-user-static:register
 docker build -f Dockerfile.${arch} -t robertslando/pkgbinaries:${arch}-latest .
 
+rm Dockerfile.${arch}
+
 docker cp $(docker ps -a -q | head -n 1):~/fetched-v8.11.3-linux-${arch} ./${folder}/fetched-v8.11.3-linux-${arch}
