@@ -78,7 +78,6 @@ chmod +x build.sh
 ./build.sh
 ```
 
-
 ### Manually
 
 This requires to run commands in a CPU with the required build ARCH
@@ -111,7 +110,7 @@ Usually pkg automatically compiles this binary if it doesn't find them in his re
 
 5. Finally copy the binary:
 
-  `cp node ~/.pkg-cache/v2.5/fetched-v8.11.3-linux-arm64`
+    `cp node ~/.pkg-cache/v2.5/fetched-v8.11.3-linux-arm64`
 
 [207006e9]: https://github.com/zeit/pkg "Zeit Pkg"
 
