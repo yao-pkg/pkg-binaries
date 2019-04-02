@@ -4,7 +4,7 @@ COPY bin/qemu-__QEMU__-static /usr/bin/
 
 RUN apk update && apk --no-cache add git wget build-base python linux-headers
 
-RUN pkg-fetch __NODE_PKG__ __PKG_OS__ __PKG_ARCH__ \
+RUN npm install -g pkg-fetch && pkg-fetch __NODE_PKG__ __PKG_OS__ __PKG_ARCH__ \
     && mv ~/.pkg-cache/v*/fetched-* /
 
 CMD ["/bin/bash"]
