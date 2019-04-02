@@ -69,7 +69,7 @@ select option in "${options[@]}"; do
 			;;
 		2)
 			pkg_os=alpine
-            os_version=-alpine
+            os_version=":alpine"
 			break
 			;;
 		*)

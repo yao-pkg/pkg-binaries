@@ -1,4 +1,4 @@
-FROM __ARCH__/node:latestOS_VERSION__
+FROM __ARCH__/node__OS_VERSION__
 
 COPY bin/qemu-__QEMU__-static /usr/bin/
 
