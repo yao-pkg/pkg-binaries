@@ -80,7 +80,7 @@ select option in "${options[@]}"; do
 	esac
 done
 
-# sudo docker run --rm --privileged multiarch/qemu-user-static:register
+sudo docker run --rm --privileged multiarch/qemu-user-static:register
 cp Dockerfile.cross Dockerfile.build
 
 sed -i "s|__ARCH__|${arch}|g" Dockerfile.build
