@@ -1,6 +1,6 @@
 PS3="Architecture: >"
 options=(
-	"armv7"
+	"armv32 (armv6 armv7)"
 	"arm64"
 )
 echo ''
@@ -9,7 +9,7 @@ select option in "${options[@]}"; do
 	case "$REPLY" in
 		1)
             arch=arm32v6
-            pkg_arch=armv7
+            pkg_arch=armv6
 			qemu=arm
 			break
 			;;
@@ -65,11 +65,17 @@ select option in "${options[@]}"; do
 	case "$REPLY" in
 		1)
 			pkg_os=linux
+			if [ "$arch" == "arm32v6" ] # arm32v6 images are just for alpine
+			then
+				arch=arm32v7
+				pkg_arch=armv7
+			fi
+			tag="node:latest"
 			break
 			;;
 		2)
 			pkg_os=alpine
-            os_version=":alpine"
+            tag="node:alpine"
 			break
 			;;
 		*)
@@ -85,7 +91,7 @@ cp Dockerfile.cross Dockerfile.build
 
 sed -i "s|__ARCH__|${arch}|g" Dockerfile.build
 sed -i "s|__NODE_VERSION__|${node_version}|g" Dockerfile.build
-sed -i "s|__OS_VERSION__|${os_version}|g" Dockerfile.build
+sed -i "s|__TAG__|${tag}|g" Dockerfile.build
 sed -i "s|__QEMU__|${qemu}|g" Dockerfile.build
 
 sed -i "s|__NODE_PKG__|${pkg_node}|g" Dockerfile.build
