@@ -74,10 +74,9 @@ chmod +x get_qemu.sh
 ./get_qemu.sh
 cd ..
 # Build the required binary inside the container. Example for arm32v6
-sudo docker run --rm --privileged multiarch/qemu-user-static:register
-docker build -f Dockerfile.arm32v6 -t robertslando/pkgbinaries:arm32v6-latest .
-docker run -it --rm robertslando/pkgbinaries:arm32v6-latest sh
-docker cp $(docker ps -a -q | head -n 1):/fetched-v8.11.3-alpine-armv7 ./arm32/fetched-v8.11.3-alpine-armv7
+chmod +x build.sh
+./build.sh
+# Follow build steps and wait for nodejs to be compiled (CAN TAKE MORE THAN 10 HOURS)
 ```
 
 ### Manually
