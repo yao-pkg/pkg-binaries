@@ -11,12 +11,14 @@ select option in "${options[@]}"; do
             arch=arm32v6
             pkg_arch=armv6
 			qemu=arm
+			folder=arm32
 			break
 			;;
 		2)
             arch=arm64v8
             pkg_arch=arm64
 			qemu=aarch64
+			folder=arm64
 			break
 			;;
 		*)
@@ -71,11 +73,13 @@ select option in "${options[@]}"; do
 				pkg_arch=armv7
 			fi
 			tag="node:latest"
+			dependencies="apt-get update \&\& apt-get install -y --no-install-recommends wget build-essential git"
 			break
 			;;
 		2)
 			pkg_os=alpine
             tag="node:alpine"
+			dependencies="apk update \&\& apk --no-cache add git wget build-base python paxctl linux-headers"
 			break
 			;;
 		*)
@@ -93,6 +97,7 @@ sed -i "s|__ARCH__|${arch}|g" Dockerfile.build
 sed -i "s|__NODE_VERSION__|${node_version}|g" Dockerfile.build
 sed -i "s|__TAG__|${tag}|g" Dockerfile.build
 sed -i "s|__QEMU__|${qemu}|g" Dockerfile.build
+sed -i "s|__DEPENDENCIES__|${dependencies}|g" Dockerfile.build
 
 sed -i "s|__NODE_PKG__|${pkg_node}|g" Dockerfile.build
 sed -i "s|__PKG_OS__|${pkg_os}|g" Dockerfile.build
@@ -100,6 +105,6 @@ sed -i "s|__PKG_ARCH__|${pkg_arch}|g" Dockerfile.build
 
 docker build -f Dockerfile.build -t ${arch}/pkgbinaries:${pkg_os}-${pkg_node} .
 docker run -it -d ${arch}/pkgbinaries:${pkg_os}-${pkg_node} sh
-docker cp $(docker ps -a -q | head -n 1):/fetched-v${node_version}-${pkg_os}-${pkg_arch} ./${pkg_arch}/fetched-v${node_version}-${pkg_os}-${pkg_arch}
+docker cp $(docker ps -a -q | head -n 1):/fetched/node ./${folder}/fetched-v${node_version}-${pkg_os}-${pkg_arch}
 
 rm Dockerfile.build

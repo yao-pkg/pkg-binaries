@@ -2,9 +2,10 @@ FROM __ARCH__/__TAG__
 
 COPY bin/qemu-__QEMU__-static /usr/bin/
 
-RUN apk update && apk --no-cache add git wget build-base python paxctl linux-headers
+RUN __DEPENDENCIES__
 
-RUN npm install pkg-fetch && /node_modules/.bin/pkg-fetch __NODE_PKG__ __PKG_OS__ __PKG_ARCH__ \
-    && mv ~/.pkg-cache/v*/fetched-* /
+RUN npm install pkg-fetch && /node_modules/.bin/pkg-fetch __NODE_PKG__ __PKG_OS__ __PKG_ARCH__
+
+RUN mkdir -p /fetched && mv ~/.pkg-cache/v*/* /fetched/node
 
 CMD ["/bin/bash"]
