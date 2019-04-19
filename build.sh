@@ -104,7 +104,6 @@ sed -i "s|__PKG_OS__|${pkg_os}|g" Dockerfile.build
 sed -i "s|__PKG_ARCH__|${pkg_arch}|g" Dockerfile.build
 
 docker build -f Dockerfile.build -t ${arch}/pkgbinaries:${pkg_os}-${pkg_node} .
-docker run -it -d ${arch}/pkgbinaries:${pkg_os}-${pkg_node} sh
-docker cp $(docker ps -a -q | head -n 1):/fetched/node ./${folder}/fetched-v${node_version}-${pkg_os}-${pkg_arch}
+docker run -it --rm -v ${pwd}/${folder}:/fetched ${arch}/pkgbinaries:${pkg_os}-${pkg_node}
 
 rm Dockerfile.build

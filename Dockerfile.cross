@@ -4,8 +4,8 @@ COPY bin/qemu-__QEMU__-static /usr/bin/
 
 RUN __DEPENDENCIES__
 
-RUN npm install pkg-fetch && /node_modules/.bin/pkg-fetch __NODE_PKG__ __PKG_OS__ __PKG_ARCH__
+ENV PKG_CACHE_PATH=/fetched
 
-RUN mkdir -p /fetched && mv ~/.pkg-cache/v*/* /fetched/node
+RUN mkdir -p /fetched && npm install pkg-fetch
 
-CMD ["/bin/bash"]
+CMD ["/node_modules/.bin/pkg-fetch", "__NODE_PKG__",  "__PKG_OS__", "__PKG_ARCH__"]
