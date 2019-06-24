@@ -33,6 +33,7 @@ PS3="NodeJS version: >"
 options=(
 	"8.11.3"
 	"10.4.1"
+	"12.2.0"
 )
 echo ''
 
