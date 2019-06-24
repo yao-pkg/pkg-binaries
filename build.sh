@@ -49,6 +49,11 @@ select option in "${options[@]}"; do
 			pkg_node=node10
 			break
 			;;
+		3)
+            node_version=12.2.2
+			pkg_node=node12
+			break
+			;;
 		*)
 			echo '####################'
 			echo '## Invalid option ##'
