@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 ask() {
 	# http://djm.me/ask
@@ -131,10 +132,10 @@ done
 PLATFORM=${options[$REPLY-1]}
 
 echo "## Creating application package in $PKG_FOLDER folder"
-sudo pkg package.json -t node8-$ARCH-$PLATFORM --out-path $PKG_FOLDER $FIX
+pkg package.json -t node8-$ARCH-$PLATFORM --out-path $PKG_FOLDER $FIX
 
 echo "## Check for .node files to include in executable folder"
-declare TO_INCLUDE=($(find ./node_modules/ -type f -name "*.node"))
+mapfile -t TO_INCLUDE < <(find ./node_modules/ -type f -name "*.node" | grep -v obj.target)
 
 TOTAL_INCLUDE=${#TO_INCLUDE[@]}
 
