@@ -113,6 +113,11 @@ sed -i "s|__PKG_OS__|${pkg_os}|g" Dockerfile.build
 sed -i "s|__PKG_ARCH__|${pkg_arch}|g" Dockerfile.build
 
 docker build -f Dockerfile.build -t ${arch}/pkgbinaries:${pkg_os}-${pkg_node} .
-docker run -it --rm -v ${pwd}/${folder}:/fetched ${arch}/pkgbinaries:${pkg_os}-${pkg_node}
+APP=$(docker run --rm -it -d ${arch}/pkgbinaries:${pkg_os}-${pkg_node})
+docker cp $APP:/fetched/ ./tmp/
+docker kill $APP
+mv tmp/v*/built* ./
+rename 's/built/fetched/g' *
+rm -rf tmp
 
 rm Dockerfile.build
