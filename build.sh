@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 PS3="Architecture: >"
 options=(
 	"armv32 (armv6 armv7)"
