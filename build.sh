@@ -34,26 +34,23 @@ done
 
 PS3="NodeJS version: >"
 options=(
-	"8.11.3"
-	"10.4.1"
-	"12.2.0"
+	"Node 8 LTS (Carbon)"
+	"Node 10 LTS (Dubnium) "
+	"Node 12 LTS (Current)"
 )
 echo ''
 
 select option in "${options[@]}"; do
 	case "$REPLY" in
 		1)
-            node_version=8.11.3
 			pkg_node=node8
 			break
 			;;
 		2)
-            node_version=10.4.1
 			pkg_node=node10
 			break
 			;;
 		3)
-            node_version=12.2.2
 			pkg_node=node12
 			break
 			;;
@@ -103,7 +100,6 @@ sudo docker run --rm --privileged multiarch/qemu-user-static:register
 cp Dockerfile.cross Dockerfile.build
 
 sed -i "s|__ARCH__|${arch}|g" Dockerfile.build
-sed -i "s|__NODE_VERSION__|${node_version}|g" Dockerfile.build
 sed -i "s|__TAG__|${tag}|g" Dockerfile.build
 sed -i "s|__QEMU__|${qemu}|g" Dockerfile.build
 sed -i "s|__DEPENDENCIES__|${dependencies}|g" Dockerfile.build
