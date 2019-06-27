@@ -112,8 +112,9 @@ docker build -f Dockerfile.build -t ${arch}/pkgbinaries:${pkg_os}-${pkg_node} .
 APP=$(docker run --rm -it -d ${arch}/pkgbinaries:${pkg_os}-${pkg_node})
 docker cp $APP:/fetched/ ./tmp/
 docker kill $APP
-mv tmp/v*/built* ./
+mv tmp/v*/built* ./${folder}
+cd ${folder}
 rename 's/built/fetched/g' *
-rm -rf tmp
+rm -rf ../tmp
 
 rm Dockerfile.build
