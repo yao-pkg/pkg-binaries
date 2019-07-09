@@ -117,4 +117,4 @@ cd ${folder}
 rename 's/built/fetched/g' *
 rm -rf ../tmp
 
-rm Dockerfile.build
+rm ../Dockerfile.build
