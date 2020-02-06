@@ -76,7 +76,7 @@ select option in "${options[@]}"; do
 			if [ "$arch" == "arm32v6" ] # arm32v6 images are just for alpine
 			then
 				arch=arm32v7
-				pkg_arch=armv7
+				pkg_arch=armv6
 			fi
 			tag="node:latest"
 			dependencies="apt-get update \&\& apt-get install -y --no-install-recommends wget build-essential git"
