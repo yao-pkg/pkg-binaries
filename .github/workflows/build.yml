@@ -1,0 +1,16 @@
+name: Build
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    if: github.actor == 'robertsLando'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
