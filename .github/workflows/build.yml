@@ -10,12 +10,6 @@ jobs:
     if: github.actor == 'robertsLando' && github.event.issue.url == 'https://api.github.com/repos/robertsLando/pkg-binaries/issues/5'
     steps:
       - uses: actions/checkout@v2
-      - name: Cache repo
-        uses: actions/cache@v1
-        with:
-          path: pkg-binaries
-          key: ${{ hashFiles('pkg-binaries/.git/refs/heads/master') }}
-
       - name: "Install deps"
         run: sudo apt-get install rename
 
