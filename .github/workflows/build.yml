@@ -16,7 +16,7 @@ jobs:
       - name: "Build ${{ github.event.comment.body }}"
         run: |
           chmod +x build.sh
-          ./build ${{ github.event.comment.body }}
+          ./build.sh ${{ github.event.comment.body }}
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
