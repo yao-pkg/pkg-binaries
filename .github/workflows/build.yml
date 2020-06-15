@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: "Install deps"
-      - run: apt-get install rename
+        run: apt-get install rename
 
       - name: "Build ${{ github.event.comment.body }}"
         run: |
