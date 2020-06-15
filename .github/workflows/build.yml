@@ -7,10 +7,24 @@ on:
 jobs:
   apk:
     runs-on: ubuntu-latest
-    if: github.actor == 'robertsLando'
+    if: github.actor == 'robertsLando' && github.event.issue.url == 'https://api.github.com/repos/robertsLando/pkg-binaries/issues/5'
     steps:
       - uses: actions/checkout@v2
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+
+      - name: "Install deps"
+      - run: apt-get install rename
+
+      - name: "Build ${{ github.event.comment.body }}"
+        run: |
+          chmod +x build.sh
+          ./build ${{ github.event.comment.body }}
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "${{ github.event.comment.body }}" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      
