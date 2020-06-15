@@ -16,6 +16,7 @@ jobs:
         run: sudo apt-get install rename
 
       - name: "Build ${{ github.event.comment.body }}"
+        timeout-minutes: 3000
         run: |
           chmod +x build.sh
           ./build.sh ${{ github.event.comment.body }}
