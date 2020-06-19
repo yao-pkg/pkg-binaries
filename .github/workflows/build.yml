@@ -7,6 +7,7 @@ on:
 jobs:
   apk:
     runs-on: ubuntu-latest
+    timeout-minutes: 3000
     if: github.actor == 'robertsLando' && github.event.issue.url == 'https://api.github.com/repos/robertsLando/pkg-binaries/issues/5'
     steps:
       - uses: actions/checkout@v2
