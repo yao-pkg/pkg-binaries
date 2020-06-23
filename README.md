@@ -4,7 +4,9 @@
 
 <a href="https://www.buymeacoffee.com/MVg9wc2HE" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please submit a pull request if you have others that are not present in pkg resources.
+Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please submit a pull request if you have others that are not present here.
+
+**ALL BINARIES HAVE BEEN MOVED TO RELEASES ASSETS. YOU WILL FIND ALL BINARIES [HERE](https://github.com/robertsLando/pkg-binaries/releases/tag/v1.0.0)**
 
 ## Usage
 
@@ -14,7 +16,7 @@ Example with `arm64` `node v8.11.3` `linux`:
 
 ```bash
 # Must set -O to preserve the correct file metadata
-wget https://github.com/robertsLando/pkg-binaries/raw/master/arm64/fetched-v8.11.3-linux-arm64 -O fetched-v8.11.3-linux-arm64
+wget https://github.com/robertsLando/pkg-binaries/releases/download/v1.0.0/fetched-v14.0.0-linux-armv6 -O fetched-v8.11.3-linux-arm64
 sudo mv fetched-v8.11.3-linux-arm64 ~/.pkg-cache/
 ```
 
@@ -27,7 +29,7 @@ pi@NanoPi-NEO-Plus2:~/.pkg-cache/v2.5$ file fetched-v8.11.3-linux-arm64
 fetched-v8.11.3-linux-arm64: ELF 64-bit LSB shared object, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-, for GNU/Linux 3.7.0, BuildID[sha1]=02bf3444ecc520c4da40e89cbfbf6831e3a205ea, not stripped
 ```
 
-SOmetimes when using `wget` it could be donwloaded as `HTML text` file and it wouldn't work.
+Sometimes when using `wget` it could be downloaded as `HTML text` file and it wouldn't work.
 
 ## Utils
 
@@ -70,15 +72,10 @@ Steps
 # Clone this repo
 git clone https://github.com/robertsLando/pkg-binaries.git
 cd pkg-binaries
-# Get qemu bianaries
-cd bin
-chmod +x get_qemu.sh
-./get_qemu.sh
-cd ..
-# Build the required binary inside the container. Example for arm32v6
+# Build the required binary
 chmod +x build.sh
 ./build.sh
-# Follow build steps and wait for nodejs to be compiled (CAN TAKE MORE THAN 10 HOURS)
+# Follow build steps and wait for nodejs to be compiled (WILL TAKE AROUND 24 HOURS!)
 ```
 
 ### Manually

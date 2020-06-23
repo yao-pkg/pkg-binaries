@@ -11,17 +11,14 @@ if [ ! -z "$1" ]; then
 	if [ "$1" == "arm32v7" ]; then
 		arch=arm32v7
 		pkg_arch=armv6 # cannot build for armv7
-		folder=arm32
 		platform="linux/arm/v7"
 	elif [ "$1" == "arm32v6" ]; then
 		arch=arm32v6
 		pkg_arch=armv6
-		folder=arm32
 		platform="linux/arm/v6"
 	elif [ "$1" == "arm64" ]; then
 		arch=arm64v8
 		pkg_arch=arm64
-		folder=arm64
 		platform="linux/arm/v8"
 	else
 		echo '####################'
@@ -60,21 +57,18 @@ else
 			1)
 				arch=arm32v6
 				pkg_arch=armv6
-				folder=arm32
 				platform="linux/arm/v6"
 				break
 				;;
 			2)
 				arch=arm32v7
 				pkg_arch=armv6
-				folder=arm32
 				platform="linux/arm/v7"
 				break
 				;;
 			3)
 				arch=arm64v8
 				pkg_arch=arm64
-				folder=arm64
 				platform="linux/arm/v8"
 				break
 				;;
@@ -164,8 +158,6 @@ APP=$(docker run --rm -it -d ${arch}/pkgbinaries:${pkg_os}-${pkg_node})
 mkdir -p tmp
 docker cp $APP:/fetched/ ./tmp/
 docker kill $APP
-mv tmp/v*/built* ./${folder}
-cd ${folder}
+mv tmp/fetched/v*/built* ./
 rename 's/built/fetched/g' *
-cd ..
 rm -rf tmp Dockerfile.build
