@@ -20,7 +20,8 @@ jobs:
         timeout-minutes: 3000
         id: build
         run: |
-          echo "::set-output name=FETCHED::${ls | grep build}"
+          FETCHED=$(ls | grep build)
+          echo "::set-output name=FETCHED::$FETCHED"
       - name: "Check output ${{ steps.build.outputs.FETCHED }}"
         run: |
           echo DONE
