@@ -18,16 +18,18 @@ jobs:
 
       - name: "Build ${{ github.event.comment.body }}"
         timeout-minutes: 3000
+        id: build
         run: |
-          chmod +x build.sh
-          ./build.sh ${{ github.event.comment.body }}
-      - name: Commit files
+          echo "::set-output name=FETCHED::${ls | grep build}"
+      - name: "Check output ${{ steps.build.outputs.FETCHED }}"
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git commit -m "${{ github.event.comment.body }}" -a
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          echo DONE
+      # - name: Upload to release
+      #   uses: svenstaro/upload-release-action@v1-release
+      #   with:
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #     file: ./${{ steps.build.outputs.FETCHED }}
+      #     asset_name: ${{ steps.build.outputs.FETCHED }}
+      #     tag: v1.0.0
+      #     overwrite: true
       
