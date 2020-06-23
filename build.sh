@@ -19,7 +19,7 @@ if [ ! -z "$1" ]; then
 	elif [ "$1" == "arm64" ]; then
 		arch=arm64v8
 		pkg_arch=arm64
-		platform="linux/arm/v8"
+		platform="linux/arm64"
 	else
 		echo '####################'
 		echo '## Invalid arch   ##'
@@ -69,7 +69,7 @@ else
 			3)
 				arch=arm64v8
 				pkg_arch=arm64
-				platform="linux/arm/v8"
+				platform="linux/arm64"
 				break
 				;;
 			*)
