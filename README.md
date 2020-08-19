@@ -10,7 +10,7 @@ Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please su
 
 ## Usage
 
-Just download the desired binary and copy it into the correct `.pkg-cache` version subfolders inside that. After this run your `pkg` command and now it will find the desired binary in cache.
+Just download the desired binary and copy it into the correct `.pkg-cache/vMAJOR.MINOR` version subfolder. After this run your `pkg` command and now it will find the desired binary in cache.
 
 Example with `arm64` `node v8.11.3` `linux`:
 
@@ -20,7 +20,7 @@ wget https://github.com/robertsLando/pkg-binaries/releases/download/v1.0.0/fetch
 sudo mv fetched-v8.11.3-linux-arm64 ~/.pkg-cache/v2.6
 ```
 
-**Note:** Finding the correct `.pkg-cache/vX.X` folder
+**Note:** Finding the correct `.pkg-cache/vMAJOR.MINOR` folder
 
 The naming of the cache folder is dependent on the version of `pkg-fetch` that is installed. Usually the naming convention is `vMAJOR.MINOR`. You can easily find out which version is installed by running `npm ls pkg-fetch` (or `yarn why pkg-fetch` for yarn users).
 
