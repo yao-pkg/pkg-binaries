@@ -10,8 +10,11 @@ RUN __DEPENDENCIES__
 
 ENV PKG_CACHE_PATH=/fetched
 
-RUN mkdir -p /fetched && npm install pkg-fetch
+RUN git clone -b patch-1 --single-branch https://github.com/n1ru4l/pkg-fetch.git /build
+WORKDIR /build
+RUN yarn && yarn run babel
+RUN mkdir -p /fetched
 
-RUN /node_modules/.bin/pkg-fetch ${PKG_NODE} ${PKG_OS} ${PKG_ARCH}
+RUN yarn run bin ${PKG_NODE} ${PKG_OS} ${PKG_ARCH}
 
 CMD ["sh"]
