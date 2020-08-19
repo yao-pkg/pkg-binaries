@@ -10,22 +10,37 @@ Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please su
 
 ## Usage
 
-Just download the desired binary and copy it into `.pkg-cache` folder or (if present) to any subfolders inside that (depends on your version of `pkg`, in my case I have to copy it inside `~/.pkg-cache/v2.5`). After this run your `pkg` command and now it will find the desired binary in cache.
+Just download the desired binary and copy it into the correct `.pkg-cache` version subfolders inside that. After this run your `pkg` command and now it will find the desired binary in cache.
 
 Example with `arm64` `node v8.11.3` `linux`:
 
 ```bash
 # Must set -O to preserve the correct file metadata
 wget https://github.com/robertsLando/pkg-binaries/releases/download/v1.0.0/fetched-v14.0.0-linux-armv6 -O fetched-v8.11.3-linux-arm64
-sudo mv fetched-v8.11.3-linux-arm64 ~/.pkg-cache/
+sudo mv fetched-v8.11.3-linux-arm64 ~/.pkg-cache/v2.6
 ```
+
+**Note:** Finding the correct `.pkg-cache/vX.X` folder
+
+The naming of the cache folder is dependent on the version of `pkg-fetch` that is installed. Usually the naming convention is `vMAJOR.MINOR`. You can easily find out which version is installed by running `npm ls pkg-fetch` (or `yarn why pkg-fetch` for yarn users).
+
+It will print something like the following to the terminal:
+
+````
+some@space:~/project$ npm ls pkg-fetch
+project@1.10.2 /Users/laurin/project
+└─┬ pkg@4.4.9
+  └── pkg-fetch@2.6.9
+ ````
+ 
+ According to the output you must download the binary into `~/.pkg-cache/v2.6`.
 
 > **ATTENTION**
 
 Once you have placed the file in `.pkg-cache` folder check that the output of `file` command gives you the correct interpreter:
 
 ```bash
-pi@NanoPi-NEO-Plus2:~/.pkg-cache/v2.5$ file fetched-v8.11.3-linux-arm64
+pi@NanoPi-NEO-Plus2:~/.pkg-cache/v2.6$ file fetched-v8.11.3-linux-arm64
 fetched-v8.11.3-linux-arm64: ELF 64-bit LSB shared object, ARM aarch64, version 1 (GNU/Linux), dynamically linked, interpreter /lib/ld-, for GNU/Linux 3.7.0, BuildID[sha1]=02bf3444ecc520c4da40e89cbfbf6831e3a205ea, not stripped
 ```
 
@@ -110,7 +125,7 @@ Usually pkg automatically compiles this binary if it doesn't find them in his re
 
 5. Finally copy the binary:
 
-    `cp node ~/.pkg-cache/v2.5/fetched-v8.11.3-linux-arm64`
+    `cp node ~/.pkg-cache/v2.6/fetched-v8.11.3-linux-arm64`
 
 [207006e9]: https://github.com/zeit/pkg "Zeit Pkg"
 
