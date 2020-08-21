@@ -12,7 +12,8 @@ RUN __DEPENDENCIES__
 
 ENV PKG_CACHE_PATH=/fetched
 
-RUN git clone -b patch-1 --single-branch https://github.com/n1ru4l/pkg-fetch.git /build
+# Use https://github.com/n1ru4l/pkg-fetch/tree/pkg-binary-fork for building
+RUN git clone -b pkg-binary-fork --single-branch https://github.com/n1ru4l/pkg-fetch.git /build
 WORKDIR /build
 RUN yarn && yarn run babel
 RUN mkdir -p /fetched
