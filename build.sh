@@ -10,7 +10,7 @@ if [ ! -z "$1" ]; then
 
 	if [ "$1" == "arm32v7" ]; then
 		arch=arm32v7
-		pkg_arch=armv6 # cannot build for armv7
+		pkg_arch=armv7
 		platform="linux/arm/v7"
 	elif [ "$1" == "arm32v6" ]; then
 		arch=arm32v6
@@ -62,7 +62,7 @@ else
 				;;
 			2)
 				arch=arm32v7
-				pkg_arch=armv6
+				pkg_arch=armv7
 				platform="linux/arm/v7"
 				break
 				;;
@@ -142,15 +142,24 @@ fi
 
 cp Dockerfile.cross Dockerfile.build
 
-sed -i "s|__TAG__|${tag}|g" Dockerfile.build
+if [[ "$OSTYPE" == "darwin"* ]]; then
+	sed -i "" "s|__TAG__|${tag}|g" Dockerfile.build
+	sed -i "" "s|__DEPENDENCIES__|${dependencies}|g" Dockerfile.build
 
-sed -i "s|__DEPENDENCIES__|${dependencies}|g" Dockerfile.build
+	NPROC=$(sysctl -n hw.physicalcpu)
+else
+	sed -i "s|__TAG__|${tag}|g" Dockerfile.build
+	sed -i "s|__DEPENDENCIES__|${dependencies}|g" Dockerfile.build
 
-docker buildx build -f Dockerfile.build \
+	NPROC=$(nproc)
+fi
+
+docker buildx build --progress plain -f Dockerfile.build \
 	--platform $platform \
 	--build-arg PKG_NODE="$pkg_node" \
 	--build-arg PKG_OS="$pkg_os" \
 	--build-arg PKG_ARCH="$pkg_arch" \
+	--build-arg NPROC="$NPROC" \
 	--load \
 	-t ${arch}/pkgbinaries:${pkg_os}-${pkg_node} .
 
