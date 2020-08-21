@@ -6,6 +6,8 @@ ARG PKG_OS
 
 ARG PKG_ARCH
 
+ARG NPROC
+
 RUN __DEPENDENCIES__
 
 ENV PKG_CACHE_PATH=/fetched
@@ -15,6 +17,6 @@ WORKDIR /build
 RUN yarn && yarn run babel
 RUN mkdir -p /fetched
 
-RUN yarn run bin ${PKG_NODE} ${PKG_OS} ${PKG_ARCH}
+RUN MAKE_JOB_COUNT=${NPROC} yarn run bin ${PKG_NODE} ${PKG_OS} ${PKG_ARCH}
 
 CMD ["sh"]

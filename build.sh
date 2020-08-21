@@ -143,19 +143,23 @@ fi
 cp Dockerfile.cross Dockerfile.build
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  sed -i "" "s|__TAG__|${tag}|g" Dockerfile.build
-  sed -i "" "s|__DEPENDENCIES__|${dependencies}|g" Dockerfile.build
-else
-  sed -i "s|__TAG__|${tag}|g" Dockerfile.build
-  sed -i "s|__DEPENDENCIES__|${dependencies}|g" Dockerfile.build
-fi
+	sed -i "" "s|__TAG__|${tag}|g" Dockerfile.build
+	sed -i "" "s|__DEPENDENCIES__|${dependencies}|g" Dockerfile.build
 
+	NPROC=$(sysctl -n hw.physicalcpu)
+else
+	sed -i "s|__TAG__|${tag}|g" Dockerfile.build
+	sed -i "s|__DEPENDENCIES__|${dependencies}|g" Dockerfile.build
+
+	NPROC=$(nproc)
+fi
 
 docker buildx build --progress plain -f Dockerfile.build \
 	--platform $platform \
 	--build-arg PKG_NODE="$pkg_node" \
 	--build-arg PKG_OS="$pkg_os" \
 	--build-arg PKG_ARCH="$pkg_arch" \
+	--build-arg NPROC="$NPROC" \
 	--load \
 	-t ${arch}/pkgbinaries:${pkg_os}-${pkg_node} .
 
