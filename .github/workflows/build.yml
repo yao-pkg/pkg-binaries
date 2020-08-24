@@ -6,7 +6,7 @@ on:
 
 jobs:
   apk:
-runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 360
     if: (github.actor == 'robertsLando' || github.actor == 'n1ru4l') && github.event.issue.url == 'https://api.github.com/repos/robertsLando/pkg-binaries/issues/5'
     steps:
