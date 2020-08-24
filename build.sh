@@ -154,6 +154,8 @@ else
 	NPROC=$(nproc)
 fi
 
+NPROC=$(($NPROC+1))
+
 docker buildx build --progress plain -f Dockerfile.build \
 	--platform $platform \
 	--build-arg PKG_NODE="$pkg_node" \

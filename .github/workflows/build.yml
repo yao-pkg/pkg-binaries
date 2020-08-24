@@ -6,17 +6,18 @@ on:
 
 jobs:
   apk:
-    runs-on: self-hosted
-    timeout-minutes: 3000
-    if: github.actor == 'robertsLando' && github.event.issue.url == 'https://api.github.com/repos/robertsLando/pkg-binaries/issues/5'
+runs-on: ubuntu-latest
+    timeout-minutes: 360
+    if: (github.actor == 'robertsLando' || github.actor == 'n1ru4l') && github.event.issue.url == 'https://api.github.com/repos/robertsLando/pkg-binaries/issues/5'
     steps:
       - uses: actions/checkout@v2
       - uses: crazy-max/ghaction-docker-buildx@v1
 
       - name: "Build ${{ github.event.comment.body }}"
-        timeout-minutes: 3000
+        timeout-minutes: 360
         id: build
         run: |
+          sudo apt-get install -y rename
           chmod +x build.sh
           ./build.sh ${{ github.event.comment.body }}
           FETCHED=$(ls | grep fetched)
