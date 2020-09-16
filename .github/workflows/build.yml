@@ -21,12 +21,14 @@ jobs:
           chmod +x build.sh
           ./build.sh ${{ github.event.comment.body }}
           FETCHED=$(ls | grep fetched)
+          NODE_MAJOR=$(echo ${{ github.event.comment.body }} | awk '{print $2}')
           echo "::set-output name=FETCHED::$FETCHED"
+          echo "::set-output name=NODE_MAJOR::$NODE_MAJOR"
       - name: Upload {{ steps.build.outputs.FETCHED }} to release
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./${{ steps.build.outputs.FETCHED }}
           asset_name: ${{ steps.build.outputs.FETCHED }}
-          tag: v1.0.0
+          tag: ${{ steps.build.outputs.NODE_MAJOR }}
           overwrite: true
