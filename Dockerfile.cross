@@ -23,6 +23,8 @@ RUN MAKE_JOB_COUNT=${NPROC} yarn run bin ${PKG_NODE} ${PKG_OS} ${PKG_ARCH}
 RUN yarn global add pkg
 
 COPY ./test /test
+# For testing:
+# COPY fetched-v12.18.1-linux-arm64 /fetched/v2.6/
 
 WORKDIR /test
 
