@@ -20,4 +20,13 @@ RUN mkdir -p /fetched
 
 RUN MAKE_JOB_COUNT=${NPROC} yarn run bin ${PKG_NODE} ${PKG_OS} ${PKG_ARCH}
 
+RUN yarn global add pkg
+
+COPY ./test /test
+
+WORKDIR /test
+
+# test
+RUN pkg -t ${PKG_NODE}-${PKG_OS}-${PKG_ARCH} app.js && ./app
+
 CMD ["sh"]
