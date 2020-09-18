@@ -2,7 +2,7 @@
 
 import { exists, mkdirp, readFile, remove, stat } from 'fs-extra';
 import { log, wasReported } from './log.js';
-import { need, system } from 'pkg-fetch';
+import { need, system } from '@org-scope/pkg-fetch';
 import assert from 'assert';
 import help from './help';
 import { isPackageJson } from '../prelude/common.js';

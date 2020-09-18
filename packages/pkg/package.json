@@ -39,7 +39,7 @@
     "into-stream": "^5.1.1",
     "minimist": "^1.2.5",
     "multistream": "^2.1.1",
-    "pkg-fetch": "*",
+    "@org-scope/pkg-fetch": "*",
     "progress": "^2.0.3",
     "resolve": "^1.15.1",
     "stream-meter": "^1.0.4"
@@ -72,11 +72,5 @@
     "rules": {
       "wrap-iife": "off"
     }
-  },
-  "greenkeeper": {
-    "emails": false,
-    "ignore": [
-      "pkg-fetch"
-    ]
   }
 }
