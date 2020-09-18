@@ -1,0 +1,9 @@
+{
+  "name": "mono-root",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}
