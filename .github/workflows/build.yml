@@ -1,34 +1,43 @@
 name: Build
 
 on:
-  issue_comment:
-    types: [created]
-
+  workflow_dispatch:
+    inputs:
+      node:
+        description: 'Node major version'
+        required: true
+        default: '12'
+      arch:
+        description: 'Arch'
+        required: true
+        default: 'arm64'
+      os:
+        description: 'OS'
+        required: true
+        default: 'linux'
 jobs:
   apk:
     runs-on: ubuntu-latest
     timeout-minutes: 360
-    if: (github.actor == 'robertsLando' || github.actor == 'n1ru4l') && github.event.issue.url == 'https://api.github.com/repos/robertsLando/pkg-binaries/issues/5'
+    if: github.actor == 'robertsLando'
     steps:
       - uses: actions/checkout@v2
       - uses: crazy-max/ghaction-docker-buildx@v1
 
-      - name: "Build ${{ github.event.comment.body }}"
+      - name: "Build ${{ github.event.inputs.arch }} node${{ github.event.inputs.node }} ${{ github.event.inputs.os }}"
         timeout-minutes: 360
         id: build
         run: |
           sudo apt-get install -y rename
           chmod +x build.sh
-          ./build.sh ${{ github.event.comment.body }}
+          ./build.sh ${{ github.event.inputs.arch }} node${{ github.event.inputs.node }} ${{ github.event.inputs.os }}
           FETCHED=$(ls | grep fetched)
-          NODE_MAJOR=$(echo ${{ github.event.comment.body }} | awk '{print $2}')
           echo "::set-output name=FETCHED::$FETCHED"
-          echo "::set-output name=NODE_MAJOR::$NODE_MAJOR"
       - name: Upload {{ steps.build.outputs.FETCHED }} to release
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ./${{ steps.build.outputs.FETCHED }}
           asset_name: ${{ steps.build.outputs.FETCHED }}
-          tag: ${{ steps.build.outputs.NODE_MAJOR }}
+          tag: node${{ github.event.inputs.node }}
           overwrite: true
