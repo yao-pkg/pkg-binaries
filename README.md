@@ -2,7 +2,7 @@
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-<a href="https://www.buymeacoffee.com/MVg9wc2HE" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/MVg9wc2HE "Buy Me A Coffee") [<img style="background:#ccc;border-radius:10px" alt="PayPal" src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-color.svg" alt="PayPal" width="200" height="40px" />](https://paypal.me/daniellando) [![Patreon](https://c5.patreon.com/external/logo/become_a_patron_button.png)](https://www.patreon.com/bePatron?u=16906849)
 
 Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please submit a pull request if you have others that are not present here.
 
@@ -10,30 +10,18 @@ Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please su
 
 ## Usage
 
-Just download the desired binary and copy it into the correct `.pkg-cache/vMAJOR.MINOR` version subfolder. After this run your `pkg` command and now it will find the desired binary in cache.
+Download the binary inside pkg cache folder before compiling your application.
 
-Example with `arm64` `node v8.11.3` `linux`:
+Example with `armv7` `node v16.16.0` `linux`:
 
 ```bash
-# Must set -O to preserve the correct file metadata
-wget https://github.com/robertsLando/pkg-binaries/releases/download/v1.0.0/fetched-v14.0.0-linux-armv6 -O fetched-v8.11.3-linux-arm64
-sudo mv fetched-v8.11.3-linux-arm64 ~/.pkg-cache/v2.6
+CACHE=~/.pkg-cache/custom #custom cache folder
+mkdir -p $CACHE
+export PKG_CACHE_PATH=$CACHE
+export IGNORE_TAG=true # prevents pkg-fetch to add a tag folder
+curl https://github.com/yao-pkg/pkg-binaries/releases/download/node16/fetched-v16.16.0-linux-armv7 -O $CACHE/built-v16.16.0-linux-armv7 # download the binary, be sure it is prefixewd with built-, otherwise it will not work
+npx pkg -t node16-linux-armv7 . # compile your application
 ```
-
-**Note:** Finding the correct `.pkg-cache/vMAJOR.MINOR` folder
-
-The naming of the cache folder is dependent on the version of `pkg-fetch` that is installed. Usually the naming convention is `vMAJOR.MINOR`. You can easily find out which version is installed by running `npm ls pkg-fetch` (or `yarn why pkg-fetch` for yarn users).
-
-It will print something like the following to the terminal:
-
-````
-some@space:~/project$ npm ls pkg-fetch
-project@1.10.2 /Users/laurin/project
-└─┬ pkg@4.4.9
-  └── pkg-fetch@2.6.9
- ````
- 
- According to the output you must download the binary into `~/.pkg-cache/v2.6`.
 
 > **ATTENTION**
 
