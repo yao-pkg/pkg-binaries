@@ -82,9 +82,9 @@ else
 
 	PS3="NodeJS version: >"
 	options=(
-		"Node 8 LTS (Carbon)"
-		"Node 10 LTS (Dubnium) "
-		"Node 12 LTS (Current)"
+		"Node 12 LTS (Erbium)"
+		"Node 16 LTS (Gallium)"
+		"Node 18 LTS (Hermes)"
 	)
 	echo ''
 

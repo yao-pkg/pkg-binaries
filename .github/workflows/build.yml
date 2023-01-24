@@ -6,11 +6,11 @@ on:
       node:
         description: 'Node major version'
         required: true
-        default: '12'
+        default: '16'
       arch:
         description: 'Arch'
         required: true
-        default: 'arm64'
+        default: 'armv7'
       os:
         description: 'OS'
         required: true
@@ -21,8 +21,12 @@ jobs:
     timeout-minutes: 360
     if: github.actor == 'robertsLando'
     steps:
-      - uses: actions/checkout@v2
-      - uses: crazy-max/ghaction-docker-buildx@v1
+      - uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
       - name: "Build ${{ github.event.inputs.arch }} node${{ github.event.inputs.node }} ${{ github.event.inputs.os }}"
         timeout-minutes: 360
@@ -32,11 +36,11 @@ jobs:
           chmod +x build.sh
           ./build.sh ${{ github.event.inputs.arch }} node${{ github.event.inputs.node }} ${{ github.event.inputs.os }}
           FETCHED=$(ls | grep fetched)
-          echo "::set-output name=FETCHED::$FETCHED"
+          echo "FETCHED=$FETCHED" >> $GITHUB_OUTPUT
       - name: Upload {{ steps.build.outputs.FETCHED }} to release
         uses: svenstaro/upload-release-action@v1-release
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ github.token }}
           file: ./${{ steps.build.outputs.FETCHED }}
           asset_name: ${{ steps.build.outputs.FETCHED }}
           tag: node${{ github.event.inputs.node }}

@@ -12,11 +12,9 @@ RUN __DEPENDENCIES__
 
 ENV PKG_CACHE_PATH=/fetched
 
-RUN git clone -b master --single-branch https://github.com/vercel/pkg-fetch.git /build
-WORKDIR /build
-RUN yarn && yarn run babel
+RUN yarn global add -g pkg-fetch
 RUN mkdir -p /fetched
 
-RUN MAKE_JOB_COUNT=${NPROC} yarn run bin ${PKG_NODE} ${PKG_OS} ${PKG_ARCH}
+RUN pkg-fetch -n ${PKG_NODE} -p ${PKG_OS} -a ${PKG_ARCH}
 
 CMD ["sh"]
