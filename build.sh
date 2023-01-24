@@ -91,15 +91,15 @@ else
 	select option in "${options[@]}"; do
 		case "$REPLY" in
 			1)
-				pkg_node=node8
+				pkg_node=node12
 				break
 				;;
 			2)
-				pkg_node=node10
+				pkg_node=node16
 				break
 				;;
 			3)
-				pkg_node=node12
+				pkg_node=node18
 				break
 				;;
 			*)

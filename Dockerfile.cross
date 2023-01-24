@@ -12,9 +12,8 @@ RUN __DEPENDENCIES__
 
 ENV PKG_CACHE_PATH=/fetched
 
-RUN yarn global add -g pkg-fetch
 RUN mkdir -p /fetched
 
-RUN pkg-fetch -n ${PKG_NODE} -p ${PKG_OS} -a ${PKG_ARCH}
+RUN npx pkg-fetch -n ${PKG_NODE} -p ${PKG_OS} -a ${PKG_ARCH}
 
 CMD ["sh"]
