@@ -10,7 +10,7 @@ on:
       arch:
         description: 'Arch'
         required: true
-        default: 'armv7'
+        default: 'arm32v7'
       os:
         description: 'OS'
         required: true
