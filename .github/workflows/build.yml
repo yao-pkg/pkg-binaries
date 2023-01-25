@@ -17,7 +17,7 @@ on:
         default: 'linux'
 jobs:
   apk:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 360
     if: github.actor == 'robertsLando'
     steps:
