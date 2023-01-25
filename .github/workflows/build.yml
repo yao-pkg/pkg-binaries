@@ -32,7 +32,7 @@ jobs:
         timeout-minutes: 9999
         id: build
         run: |
-          sudo apt-get install -y rename
+          # sudo apt-get install -y rename
           chmod +x build.sh
           ./build.sh ${{ github.event.inputs.arch }} node${{ github.event.inputs.node }} ${{ github.event.inputs.os }}
           FETCHED=$(ls | grep fetched)
