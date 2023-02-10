@@ -1,0 +1,47 @@
+name: Build QEMU
+
+on:
+  workflow_dispatch:
+    inputs:
+      node:
+        description: 'Node major version'
+        required: true
+        default: '16'
+      arch:
+        description: 'Arch'
+        required: true
+        default: 'arm32v7'
+      os:
+        description: 'OS'
+        required: true
+        default: 'linux'
+jobs:
+  apk:
+    runs-on: X64
+    timeout-minutes: 9999
+    if: github.actor == 'robertsLando'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: "Build ${{ github.event.inputs.arch }} node${{ github.event.inputs.node }} ${{ github.event.inputs.os }}"
+        timeout-minutes: 9999
+        id: build
+        run: |
+          # sudo apt-get install -y rename
+          chmod +x build.sh
+          ./build.sh ${{ github.event.inputs.arch }} node${{ github.event.inputs.node }} ${{ github.event.inputs.os }}
+          FETCHED=$(ls | grep fetched)
+          echo "FETCHED=$FETCHED" >> $GITHUB_OUTPUT
+      - name: Upload {{ steps.build.outputs.FETCHED }} to release
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ github.token }}
+          file: ./${{ steps.build.outputs.FETCHED }}
+          asset_name: ${{ steps.build.outputs.FETCHED }}
+          tag: node${{ github.event.inputs.node }}
+          overwrite: true
