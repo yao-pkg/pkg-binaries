@@ -18,8 +18,8 @@ Example with `armv7` `node v16.16.0` `linux`:
 CACHE=~/.pkg-cache/custom #custom cache folder
 mkdir -p $CACHE
 export PKG_CACHE_PATH=$CACHE
-export IGNORE_TAG=true # prevents pkg-fetch to add a tag folder
-curl https://github.com/yao-pkg/pkg-binaries/releases/download/node16/fetched-v16.16.0-linux-armv7 -O $CACHE/built-v16.16.0-linux-armv7 # download the binary, be sure it is prefixewd with built-, otherwise it will not work
+export PKG_IGNORE_TAG=true # prevents pkg-fetch to add a tag folder
+curl https://github.com/yao-pkg/pkg-binaries/releases/download/node16/built-v16.16.0-linux-armv7 -O $CACHE/built-v16.16.0-linux-armv7 # download the binary, be sure it is prefixewd with built-, otherwise it will not work
 npx pkg -t node16-linux-armv7 . # compile your application
 ```
 
