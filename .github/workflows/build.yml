@@ -27,7 +27,7 @@ jobs:
           mkdir -p $CACHE
           export PKG_CACHE_PATH=$CACHE
           export IGNORE_TAG=true # prevents pkg-fetch to add a tag folder
-          npx pkg-fetch -n ${{ github.event.inputs.node }}
+          npx pkg-fetch -n node${{ github.event.inputs.node }}
       - name: Upload node binary to release
         uses: svenstaro/upload-release-action@v2
         with:
