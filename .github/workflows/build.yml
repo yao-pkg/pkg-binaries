@@ -14,6 +14,11 @@ jobs:
     if: github.actor == 'robertsLando'
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
       
       - name: "Build armv7 node${{ github.event.inputs.node }} linux"
         timeout-minutes: 9999
