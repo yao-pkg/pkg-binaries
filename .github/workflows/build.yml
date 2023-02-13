@@ -24,7 +24,7 @@ jobs:
         id: build
         run: |
           CACHE=~/.pkg-cache/custom # custom cache folder
-          rm -rf $CACHE
+          rm -rf $CACHE/built-*
           mkdir -p $CACHE
           export PKG_CACHE_PATH=$CACHE
           export PKG_IGNORE_TAG=true # prevents pkg-fetch to add a tag folder
