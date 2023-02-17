@@ -29,7 +29,7 @@ jobs:
           arch: none
           distro: none
 
-          githubToken: ${{ github.token }}
+          # githubToken: ${{ github.token }}
           dockerRunArgs: |
             --volume "${PWD}:/app"
             --volume "${PWD}/out:/out"
