@@ -17,31 +17,50 @@ on:
         default: 'linux'
 jobs:
   apk:
-    runs-on: X64
+    runs-on: ubuntu-latest
     timeout-minutes: 9999
     if: github.actor == 'robertsLando'
     steps:
       - uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
 
       - name: "Build ${{ github.event.inputs.arch }} node${{ github.event.inputs.node }} ${{ github.event.inputs.os }}"
-        timeout-minutes: 9999
-        id: build
-        run: |
-          # sudo apt-get install -y rename
-          chmod +x build.sh
-          ./build.sh ${{ github.event.inputs.arch }} node${{ github.event.inputs.node }} ${{ github.event.inputs.os }}
-          FETCHED=$(ls | grep fetched)
-          echo "FETCHED=$FETCHED" >> $GITHUB_OUTPUT
-      - name: Upload {{ steps.build.outputs.FETCHED }} to release
-        uses: svenstaro/upload-release-action@v1-release
+        uses: uraimo/run-on-arch-action@v2
+        with:
+          arch: none
+          distro: none
+
+          githubToken: ${{ github.token }}
+          dockerRunArgs: |
+            --volume "${PWD}:/app"
+            --volume "${PWD}/out:/out"
+
+          base_image: ${{ github.event.inputs.arch }}/node:${{ github.event.inputs.node }}-${{ github.event.inputs.os == 'linux' && 'bullseye' || 'alpine3.16' }}
+
+          install: |
+            case "${{ github.event.inputs.os }}" in
+              linux*)
+                apt-get update
+                apt-get install -y --no-install-recommends wget build-essential git
+                ;;
+              alpine*)
+                apk update
+                apk --no-cache add git wget build-base python paxctl linux-headers
+                ;;
+            esac
+          # Rebuild .node modules for armv7
+          run: |
+            CACHE=/out # custom cache folder
+            rm -rf $CACHE/built-*
+            mkdir -p $CACHE
+            export PKG_CACHE_PATH=$CACHE
+            export PKG_IGNORE_TAG=true # prevents pkg-fetch to add a tag folder
+            npx pkg-fetch -n node${{ github.event.inputs.node }}
+
+      - name: Upload node binary to release
+        uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ github.token }}
-          file: ./${{ steps.build.outputs.FETCHED }}
-          asset_name: ${{ steps.build.outputs.FETCHED }}
+          file: out/built-*
+          file_glob: true
           tag: node${{ github.event.inputs.node }}
           overwrite: true
