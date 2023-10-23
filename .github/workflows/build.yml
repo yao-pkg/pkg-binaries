@@ -23,7 +23,7 @@ jobs:
         timeout-minutes: 9999
         id: build
         run: |
-          CACHE=~/.pkg-cache/custom # custom cache folder
+          CACHE=./pkg-cache/custom # custom cache folder
           rm -rf $CACHE/built-*
           mkdir -p $CACHE
           export PKG_CACHE_PATH=$CACHE
@@ -35,7 +35,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ github.token }}
-          file: ~/.pkg-cache/custom/built-*
+          file: ./pkg-cache/custom/built-*
           file_glob: true
           tag: node${{ github.event.inputs.node }}
           overwrite: true
