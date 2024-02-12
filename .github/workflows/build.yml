@@ -30,7 +30,7 @@ jobs:
           export PKG_IGNORE_TAG=true # prevents pkg-fetch to add a tag folder
           # fix error nodejs 18: selected processor does not support `yield' in ARM mode
           export CXXFLAG="-march=native -mcpu=native"
-          npx @yao-pkg/pkg-fetch -n node${{ github.event.inputs.node }}
+          npx @yao-pkg/pkg-fetch@latest -n node${{ github.event.inputs.node }}
       - name: Upload node binary to release
         uses: svenstaro/upload-release-action@v2
         with:
