@@ -6,7 +6,7 @@
 
 Collection of NodeJS precompiled binaries to use with [pkg][207006e9]. Please submit a pull request if you have others that are not present here.
 
-**ALL BINARIES HAVE BEEN MOVED TO RELEASES ASSETS. YOU WILL FIND ALL BINARIES [HERE](https://github.com/robertsLando/pkg-binaries/releases/tag/v1.0.0)**
+**ALL BINARIES HAVE BEEN MOVED TO RELEASES ASSETS. YOU WILL FIND ALL BINARIES [HERE](https://github.com/robertsLando/pkg-binaries/releases)**
 
 ## Usage
 
