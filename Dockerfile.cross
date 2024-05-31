@@ -16,4 +16,15 @@ RUN mkdir -p /fetched
 
 RUN npx pkg-fetch -n ${PKG_NODE} -p ${PKG_OS} -a ${PKG_ARCH}
 
+RUN yarn global add pkg
+
+COPY ./test /test
+# For testing:
+# COPY fetched-v12.18.1-linux-arm64 /fetched/v2.6/
+
+WORKDIR /test
+
+# test
+RUN pkg -t ${PKG_NODE}-${PKG_OS}-${PKG_ARCH} app.js && ./app
+
 CMD ["sh"]
