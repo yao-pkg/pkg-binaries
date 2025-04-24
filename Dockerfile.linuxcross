@@ -18,7 +18,7 @@ RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
 ARG TARGET_TOOLCHAIN_ARCH
 
 RUN [ `uname -m` = ${TARGET_TOOLCHAIN_ARCH} ] || \
-    apt-get install -y binutils-${TARGET_TOOLCHAIN_ARCH}-linux-gnu g++-10-${TARGET_TOOLCHAIN_ARCH}-linux-gnu
+    apt-get install -y binutils-arm-linux-gnueabihf g++-10-arm-linux-gnueabihf
 
 ENV CC=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-gcc-10
 ENV CXX=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-g++-10
