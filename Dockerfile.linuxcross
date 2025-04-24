@@ -1,0 +1,43 @@
+FROM ubuntu:focal AS build
+
+USER root:root
+WORKDIR /root/pkg-fetch/
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update
+RUN apt-get install -y curl software-properties-common ca-certificates gnupg
+
+# Install Node.js 20
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
+    apt-get update && \
+    apt-get install -y binutils g++-10 git make patch python3 python3-distutils
+
+ARG TARGET_TOOLCHAIN_ARCH
+
+RUN [ `uname -m` = ${TARGET_TOOLCHAIN_ARCH} ] || \
+    apt-get install -y binutils-${TARGET_TOOLCHAIN_ARCH}-linux-gnu g++-10-${TARGET_TOOLCHAIN_ARCH}-linux-gnu
+
+ENV CC=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-gcc-10
+ENV CXX=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-g++-10
+ENV AR=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-ar
+ENV NM=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-nm
+ENV RANLIB=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-ranlib
+ENV READELF=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-readelf
+ENV STRIP=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-strip
+ENV CC_host=gcc-10
+ENV CXX_host=g++-10
+ENV AR_host=ar
+ENV NM_host=nm
+ENV RANLIB_host=ranlib
+ENV READELF_host=readelf
+
+ARG PKG_FETCH_OPTION_a
+ARG PKG_FETCH_OPTION_n
+
+RUN mkdir -p dist && npx @yao-pkg/pkg-fetch --arch $PKG_FETCH_OPTION_a --node-range $PKG_FETCH_OPTION_n --output dist
+
+FROM scratch
+COPY --from=build /root/pkg-fetch/dist /

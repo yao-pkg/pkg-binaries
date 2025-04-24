@@ -19,10 +19,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Download Dockerfile.linuxcross from @yao-pkg/pkg-fetch
-        run: |
-          curl -L https://raw.githubusercontent.com/yao-pkg/pkg-fetch/main/Dockerfile.linuxcross -o Dockerfile.linuxcross
-
       - name: Build
         id: build
         uses: docker/build-push-action@v6
