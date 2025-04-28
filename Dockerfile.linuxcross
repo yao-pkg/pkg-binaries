@@ -11,22 +11,28 @@ RUN apt-get install -y curl software-properties-common ca-certificates gnupg
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs
 
-# RUN add-apt-repository ppa:ubuntu-toolchain-r/armhf -y && \
-RUN apt-get update && \
+# Add Ubuntu toolchain repository and install build tools
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
+    apt-get update && \
     apt-get install -y binutils g++-10 git make patch python3 python3-distutils
 
-ARG TARGET_TOOLCHAIN_ARCH
+# Setting ARM architecture toolchain
+# Note: For ARMv7, we need to use arm-linux-gnueabihf as the toolchain
+ARG TARGET_PLATFORM=armv7
+ARG TARGET_TOOLCHAIN_ARCH=arm-linux-gnueabihf
 
-# RUN [ `uname -m` = ${TARGET_TOOLCHAIN_ARCH} ] || \
-#     apt-get install -y binutils-arm-linux-gnueabihf g++-10-arm-linux-gnueabihf
+# Install cross-compilation toolchain without version specifier
+RUN apt-get update && \
+    apt-get install -y binutils-${TARGET_TOOLCHAIN_ARCH} gcc-${TARGET_TOOLCHAIN_ARCH} g++-${TARGET_TOOLCHAIN_ARCH}
 
-ENV CC=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-gcc-10
-ENV CXX=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-g++-10
-ENV AR=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-ar
-ENV NM=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-nm
-ENV RANLIB=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-ranlib
-ENV READELF=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-readelf
-ENV STRIP=${TARGET_TOOLCHAIN_ARCH}-linux-gnu-strip
+# Set environment variables for cross-compilation (without version suffix)
+ENV CC=${TARGET_TOOLCHAIN_ARCH}-gcc
+ENV CXX=${TARGET_TOOLCHAIN_ARCH}-g++
+ENV AR=${TARGET_TOOLCHAIN_ARCH}-ar
+ENV NM=${TARGET_TOOLCHAIN_ARCH}-nm
+ENV RANLIB=${TARGET_TOOLCHAIN_ARCH}-ranlib
+ENV READELF=${TARGET_TOOLCHAIN_ARCH}-readelf
+ENV STRIP=${TARGET_TOOLCHAIN_ARCH}-strip
 ENV CC_host=gcc-10
 ENV CXX_host=g++-10
 ENV AR_host=ar
@@ -34,7 +40,12 @@ ENV NM_host=nm
 ENV RANLIB_host=ranlib
 ENV READELF_host=readelf
 
-ARG PKG_FETCH_OPTION_a
+# Debug: verify cross compiler exists
+RUN ${CC} --version || echo "CC not found" && \
+    ${CXX} --version || echo "CXX not found" && \
+    ${STRIP} --version || echo "STRIP not found"
+
+ARG PKG_FETCH_OPTION_a=armv7
 ARG PKG_FETCH_OPTION_n
 
 RUN mkdir -p dist && npx @yao-pkg/pkg-fetch --arch $PKG_FETCH_OPTION_a --node-range $PKG_FETCH_OPTION_n --output dist

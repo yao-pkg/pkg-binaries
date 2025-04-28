@@ -24,7 +24,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           build-args: |
-            TARGET_TOOLCHAIN_ARCH=armv7
             PKG_FETCH_OPTION_a=armv7
             PKG_FETCH_OPTION_n=node${{ github.event.inputs.node }}
           context: .
