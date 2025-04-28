@@ -40,6 +40,10 @@ ENV NM_host=nm
 ENV RANLIB_host=ranlib
 ENV READELF_host=readelf
 
+# Add these environment variables
+ENV CXXFLAGS="-std=gnu++2a" 
+ENV NODE_CXXFLAGS="-std=gnu++2a"
+
 # Debug: verify cross compiler exists
 RUN ${CC} --version || echo "CC not found" && \
     ${CXX} --version || echo "CXX not found" && \
