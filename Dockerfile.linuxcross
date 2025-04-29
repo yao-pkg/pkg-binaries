@@ -25,6 +25,16 @@ ARG TARGET_TOOLCHAIN_ARCH=arm-linux-gnueabihf
 RUN apt-get update && \
     apt-get install -y binutils-${TARGET_TOOLCHAIN_ARCH} gcc-${TARGET_TOOLCHAIN_ARCH} g++-${TARGET_TOOLCHAIN_ARCH}
 
+# Create a wrapper for arm-linux-gnueabihf-g++
+RUN mv /usr/bin/arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++.real && \
+    echo '#!/bin/bash' > /usr/bin/arm-linux-gnueabihf-g++ && \
+    echo 'args=()' >> /usr/bin/arm-linux-gnueabihf-g++ && \
+    echo 'for arg in "$@"; do' >> /usr/bin/arm-linux-gnueabihf-g++ && \
+    echo '  if [ "$arg" = "-std=gnu++20" ]; then args+=("-std=gnu++2a"); else args+=("$arg"); fi' >> /usr/bin/arm-linux-gnueabihf-g++ && \
+    echo 'done' >> /usr/bin/arm-linux-gnueabihf-g++ && \
+    echo 'exec /usr/bin/arm-linux-gnueabihf-g++.real "${args[@]}"' >> /usr/bin/arm-linux-gnueabihf-g++ && \
+    chmod +x /usr/bin/arm-linux-gnueabihf-g++
+
 # Set environment variables for cross-compilation (without version suffix)
 ENV CC=${TARGET_TOOLCHAIN_ARCH}-gcc
 ENV CXX=${TARGET_TOOLCHAIN_ARCH}-g++
