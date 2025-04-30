@@ -30,7 +30,7 @@ RUN mv /usr/bin/arm-linux-gnueabihf-g++ /usr/bin/arm-linux-gnueabihf-g++.real &&
     echo '#!/bin/bash' > /usr/bin/arm-linux-gnueabihf-g++ && \
     echo 'args=()' >> /usr/bin/arm-linux-gnueabihf-g++ && \
     echo 'for arg in "$@"; do' >> /usr/bin/arm-linux-gnueabihf-g++ && \
-    echo '  if [ "$arg" = "-std=gnu++20" ]; then args+=("-std=gnu++2a"); else args+=("$arg"); fi' >> /usr/bin/arm-linux-gnueabihf-g++ && \
+    echo '  if [ "$arg" = "-std=gnu++20" ]; then args+=("-std=gnu++17"); else args+=("$arg"); fi' >> /usr/bin/arm-linux-gnueabihf-g++ && \
     echo 'done' >> /usr/bin/arm-linux-gnueabihf-g++ && \
     echo 'exec /usr/bin/arm-linux-gnueabihf-g++.real "${args[@]}"' >> /usr/bin/arm-linux-gnueabihf-g++ && \
     chmod +x /usr/bin/arm-linux-gnueabihf-g++
@@ -51,10 +51,10 @@ ENV RANLIB_host=ranlib
 ENV READELF_host=readelf
 
 # Add these environment variables
-ENV CFLAGS=-std=gnu++2a
-ENV CFLAGS_host=-std=gnu++2a
-ENV CXXFLAGS=-std=gnu++2a
-ENV CXXFLAGS_host=-std=gnu++2a
+ENV CFLAGS=-std=gnu++17
+ENV CFLAGS_host=-std=gnu++17
+ENV CXXFLAGS=-std=gnu++17
+ENV CXXFLAGS_host=-std=gnu++17
 
 # Debug: verify cross compiler exists
 RUN ${CC} --version || echo "CC not found" && \
