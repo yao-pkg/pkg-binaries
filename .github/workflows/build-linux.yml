@@ -34,8 +34,13 @@ jobs:
       - name: Check if binary is compiled, skip if download only
         id: check_file
         run: |
-          ls -l dist
-          (test -f dist/*.sha256sum && echo "EXISTS=true" >> $GITHUB_OUTPUT) || echo "EXISTS=false" >> $GITHUB_OUTPUT
+          ls -la dist/
+          # Check for binary files (both built and fetched are acceptable)
+          if ls dist/built-* 1> /dev/null 2>&1 || ls dist/fetched-* 1> /dev/null 2>&1; then
+            echo "EXISTS=true" >> $GITHUB_OUTPUT
+          else
+            echo "EXISTS=false" >> $GITHUB_OUTPUT
+          fi
       
       - name: Upload node binary to release
         if: steps.check_file.outputs.EXISTS == 'true'
