@@ -9,10 +9,7 @@ on:
         default: "22"
 jobs:
   linux-armv7:
-    runs-on: ubuntu-22.04
-
-    strategy:
-      fail-fast: false
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
 
