@@ -17,8 +17,20 @@ RUN apt-get install -y binutils g++-12 git make patch python3 python3-setuptools
 # which will translate to arm-linux-gnueabihf toolchain
 ARG TARGET_TOOLCHAIN_ARCH=arm
 
-RUN [ `uname -m` = ${TARGET_TOOLCHAIN_ARCH} ] || \
-    apt-get install -y binutils-${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf g++-12-${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf
+# Only install cross-compilation toolchain if we're not already on the target architecture
+# When building with --platform linux/arm/v7, dpkg --print-architecture returns "armhf"
+RUN if ! dpkg --print-architecture | grep -q armhf; then \
+        apt-get install -y binutils-${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf g++-12-${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf; \
+    else \
+        # When building natively on armhf, create symlinks so cross-compiler names point to native compilers \
+        ln -s /usr/bin/gcc-12 /usr/bin/${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-gcc-12 && \
+        ln -s /usr/bin/g++-12 /usr/bin/${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-g++-12 && \
+        ln -s /usr/bin/ar /usr/bin/${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-ar && \
+        ln -s /usr/bin/nm /usr/bin/${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-nm && \
+        ln -s /usr/bin/ranlib /usr/bin/${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-ranlib && \
+        ln -s /usr/bin/readelf /usr/bin/${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-readelf && \
+        ln -s /usr/bin/strip /usr/bin/${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-strip; \
+    fi
 
 ENV CC=${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-gcc-12
 ENV CXX=${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-g++-12
