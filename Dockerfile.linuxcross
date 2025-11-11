@@ -20,7 +20,8 @@ ARG TARGET_TOOLCHAIN_ARCH=arm
 # Only install cross-compilation toolchain if we're not already on the target architecture
 # When building with --platform linux/arm/v7, dpkg --print-architecture returns "armhf"
 RUN if ! dpkg --print-architecture | grep -q armhf; then \
-        apt-get install -y binutils-${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf g++-12-${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf;
+        apt-get install -y binutils-${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf g++-12-${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf; \
+    fi
 
 ENV CC=${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-gcc-12
 ENV CXX=${TARGET_TOOLCHAIN_ARCH}-linux-gnueabihf-g++-12
