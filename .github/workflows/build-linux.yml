@@ -9,22 +9,12 @@ on:
         default: "22"
 jobs:
   linux-armv7:
-    runs-on: macos-14 # ARM64 runner for better ARMv7 emulation performance
-
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v5
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-        # Remove unneeded stuff to free up build space (from Node https://github.com/nodejs/build/issues/3878)
-      - name: Cleanup before build
-        run: |
-          sudo rm -rf /Users/runner/Library/Android/sdk
-          sudo rm -rf /Users/runner/Library/Developer/CoreSimulator/Caches
-          echo "::group::Free space after cleanup"
-          df -h
-          echo "::endgroup::"
 
       - name: Build
         id: build
