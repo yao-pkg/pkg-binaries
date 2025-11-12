@@ -12,14 +12,10 @@ jobs:
     runs-on: macos-14 # ARM64 runner for better ARMv7 emulation performance
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: |
-            image=moby/buildkit:latest
-          buildkitd-flags: --allow-insecure-entitlement=security.insecure --allow-insecure-entitlement=network.host
 
         # Remove unneeded stuff to free up build space (from Node https://github.com/nodejs/build/issues/3878)
       - name: Cleanup before build
